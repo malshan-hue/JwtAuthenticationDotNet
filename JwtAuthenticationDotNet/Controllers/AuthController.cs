@@ -43,11 +43,20 @@ namespace JwtAuthenticationDotNet.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserDto request)
         {
-            var user = await _authService.LoginAsyn(request);
+            var result = await _authService.LoginAsyn(request);
 
-            if (user is null) return BadRequest("User Not Found");
+            if (result is null) return BadRequest("User Not Found");
 
-            return Ok(user);
+            return Ok(result);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto request)
+        {
+            var result = await _authService.RefreshToken(request);
+            if (result is null || result.AccessToken is null || result.RefreshToken is null) return BadRequest("Invalid Token");
+
+            return Ok(result);
         }
 
         [HttpGet("auth-user")]
