@@ -50,11 +50,18 @@ namespace JwtAuthenticationDotNet.Controllers
             return Ok(user);
         }
 
-        [HttpGet("Auth-user")]
+        [HttpGet("auth-user")]
         [Authorize]
         public async Task<IActionResult> AuthenticatedUserEndpoint()
         {
             return Ok("You are Authenticated!!!!");
+        }
+
+        [HttpGet("admin-only")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AdminUserEndpoint()
+        {
+            return Ok("You are an admin");
         }
     }
 }
