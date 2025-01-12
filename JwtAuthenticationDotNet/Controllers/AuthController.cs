@@ -1,6 +1,7 @@
 ﻿using JwtAuthenticationDotNet.Entities;
 using JwtAuthenticationDotNet.Models;
 using JwtAuthenticationDotNet.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,11 @@ namespace JwtAuthenticationDotNet.Controllers
             return Ok(user);
         }
 
-        
+        [HttpGet("Auth-user")]
+        [Authorize]
+        public async Task<IActionResult> AuthenticatedUserEndpoint()
+        {
+            return Ok("You are Authenticated!!!!");
+        }
     }
 }
