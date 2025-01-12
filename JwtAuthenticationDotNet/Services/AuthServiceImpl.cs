@@ -68,7 +68,7 @@ namespace JwtAuthenticationDotNet.Services
 
         public async Task<TokenResponseDto?> RefreshToken(RefreshTokenRequestDto request)
         {
-            var user = await GetUserByRefreshToken(request.userId, request.RefreshToken);
+            var user = await ValidateRefreshToken(request);
             if (user is null)
             {
                 return null;
@@ -127,11 +127,11 @@ namespace JwtAuthenticationDotNet.Services
             };
         }
 
-        private async Task<User?> GetUserByRefreshToken(Guid userId, string refreshToken)
+        private async Task<User?> ValidateRefreshToken(RefreshTokenRequestDto request)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == request.userId);
 
-            if (user is null || user.RefreahToken != refreshToken || user.RefreahTokenExpiryTime < DateTime.Now)
+            if (user is null || user.RefreahToken != request.RefreshToken|| user.RefreahTokenExpiryTime < DateTime.Now)
             {
                 return null;
             }
